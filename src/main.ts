@@ -3,7 +3,6 @@ import Player from 'video.js/dist/types/player';
 import 'video.js/dist/video-js.css';
 import './style.css';
 
-// M3U Kanal Modeli
 interface Channel {
   id: number;
   name: string;
@@ -11,15 +10,14 @@ interface Channel {
   url: string;
 }
 
-// TEST M3U URL'si (İsterseniz kendi URL'niz ile değiştirin)
-const SAMPLE_M3U_URL = 'https://raw.githubusercontent.com/TechPhantom34/iptv/refs/heads/master/index.m3u';
+// Test M3U Bağlantısı (Kendi URL'iniz ile değiştirebilirsiniz)
+const SAMPLE_M3U_URL = 'https://iptv-org.github.io/iptv/languages/tur.m3u';
 
 let channels: Channel[] = [];
 let player: Player;
 let osdTimeout: number;
 
-// 1. M3U Dosyasını Parse Eden Fonksiyon
-
+// M3U Parse Fonksiyonu (Tip garantili - Hata vermez)
 async function parseM3U(url: string): Promise<Channel[]> {
   try {
     const response = await fetch(url);
@@ -27,42 +25,42 @@ async function parseM3U(url: string): Promise<Channel[]> {
     const lines = data.split('\n');
 
     const parsedChannels: Channel[] = [];
-    let currentChannel: Partial<Channel> | null = null;
+    let tempName = '';
+    let tempLogo = '';
     let idCounter = 1;
 
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i].trim();
 
       if (line.startsWith('#EXTINF:')) {
-        // Logo ayıklama
         const logoMatch = line.match(/tvg-logo="([^"]*)"/);
-        const logo = logoMatch ? logoMatch[1] : 'https://via.placeholder.com/50?text=TV';
+        tempLogo = logoMatch ? logoMatch[1] : 'https://via.placeholder.com/50?text=TV';
 
-        // Kanal adı ayıklama (Virgülden sonraki kısım)
         const nameParts = line.split(',');
-        const name = nameParts.length > 1 ? nameParts[nameParts.length - 1].trim() : `Kanal ${idCounter}`;
+        tempName = nameParts.length > 1 ? nameParts[nameParts.length - 1].trim() : `Kanal ${idCounter}`;
+      } else if (line.startsWith('http://') || line.startsWith('https://')) {
+        if (tempName) {
+          parsedChannels.push({
+            id: idCounter++,
+            name: tempName,
+            logo: tempLogo,
+            url: line
+          });
 
-        currentChannel = {
-          id: idCounter++,
-          name,
-          logo
-        };
-      } else if ((line.startsWith('http://') || line.startsWith('https://')) && currentChannel) {
-        // HLS URL'si - currentChannel null/undefined kontrolü garantiye alındı
-        currentChannel.url = line;
-        parsedChannels.push(currentChannel as Channel);
-        currentChannel = null; // Bir sonraki kanal için sıfırla
+          tempName = '';
+          tempLogo = '';
+        }
       }
     }
 
     return parsedChannels;
   } catch (error) {
-    console.error('M3U Yükleme/Parse Hatası:', error);
+    console.error('M3U Yükleme Hatası:', error);
     return [];
   }
 }
 
-// 2. Kanal Listesini DOM'a Basma
+// Kanal Listesini Ekrana Basma
 function renderChannelList(list: Channel[]) {
   const channelListEl = document.getElementById('channel-list')!;
   channelListEl.innerHTML = '';
@@ -82,28 +80,25 @@ function renderChannelList(list: Channel[]) {
   });
 }
 
-// 3. Kanal Seçimi ve TV Geçişi (OSD Ekranı ile)
+// Kanalı Video.js Üzerinde Oynatma
 function playChannel(channel: Channel) {
   if (!player) return;
 
-  // Video.js kaynağını HLS (.m3u8) olarak değiştirme
   player.src({
     src: channel.url,
     type: 'application/x-mpegURL'
   });
 
-  player.play().catch(() => console.log('Autoplay engellendi'));
+  player.play().catch(() => console.log('Otomatik oynatma engellendi'));
 
-  // Aktif kanal stilini güncelleme
   document.querySelectorAll('.channel-item').forEach(el => el.classList.remove('active'));
   const activeEl = document.querySelector(`[data-id="${channel.id}"]`);
   activeEl?.classList.add('active');
 
-  // TV OSD (Bilgi Ekranını) Göster ve 4sn sonra kapat
   showOSD(channel);
 }
 
-// TV havası için Ekran Overlay
+// TV OSD Bilgi Ekranı
 function showOSD(channel: Channel) {
   const osd = document.getElementById('osd')!;
   const osdTitle = document.getElementById('osd-title')!;
@@ -120,7 +115,7 @@ function showOSD(channel: Channel) {
   }, 4000);
 }
 
-// 4. Arama İşlevi
+// Arama Mantığı
 function setupSearch() {
   const searchInput = document.getElementById('search-input') as HTMLInputElement;
 
@@ -131,10 +126,10 @@ function setupSearch() {
   });
 }
 
-// 5. Uygulama Başlatma
+// Başlatıcı
 async function init() {
-  // Video.js Oynatıcıyı Başlatma
   const videoElement = document.getElementById('tv-player') as HTMLVideoElement;
+  
   player = videojs(videoElement, {
     autoplay: false,
     controls: true,
@@ -142,12 +137,10 @@ async function init() {
     responsive: true
   });
 
-  // M3U Yükle ve Başlat
   channels = await parseM3U(SAMPLE_M3U_URL);
   renderChannelList(channels);
   setupSearch();
 
-  // İlk kanalı otomatik yükle
   if (channels.length > 0) {
     playChannel(channels[0]);
   }
