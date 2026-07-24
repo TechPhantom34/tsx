@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Web TV Player</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div class="tv-container">
+      <!-- SOL/ÜST: Kanal Arama ve Liste Bölümü -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <h2>📺 Canlı TV</h2>
+          <input type="text" id="search-input" placeholder="Kanal ara..." />
+        </div>
+        <ul id="channel-list" class="channel-list">
+          <!-- Kanallar TS ile buraya basılacak -->
+        </ul>
+      </aside>
+
+      <!-- SAĞ/ALT: Video.js TV Player Bölümü -->
+      <main class="player-container">
+        <div class="tv-screen">
+          <video
+            id="tv-player"
+            class="video-js vjs-default-skin vjs-big-play-centered"
+            controls
+            preload="auto"
+            playsinline
+          ></video>
+          <!-- Television OSD (Ekran Bilgisi Overlay) -->
+          <div id="osd" class="osd hidden">
+            <img id="osd-logo" src="" alt="" class="osd-logo" />
+            <div class="osd-info">
+              <span class="osd-badge">CANLI</span>
+              <h3 id="osd-title">Kanal Seçilmedi</h3>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
