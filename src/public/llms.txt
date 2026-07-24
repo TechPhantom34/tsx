@@ -1,0 +1,17 @@
+# CebimdeTV
+
+> CebimdeTV, kullanıcıların tarayıcı üzerinden Tũrk Kanalları canlı yayın akışlarını izlemesine olanak tanıyan ücretsiz, modern ve web tabanlı bir TV/Medya oynatıcısıdır.
+
+## Özellikler
+- M3U ve M3U8 oynatma listelerini otomatik parse etme.
+- Kanal adı, logosu ve canlı yayın URL'sini ayrıştırma.
+- Dahili canlı kanal arama sistemi.
+- Video.js altyapısı ile HLS canlı yayın desteği.
+- Smart TV tarzı OSD (On-Screen Display) kanal bilgilendirme ekranı.
+- Masaüstü ve mobil uyumlu responsive arayüz.
+
+## Kullanım
+ CebimdeTV, kullanıcılara kendi M3U bağlantılarını yükleyerek veya varsayılan ücretsiz kanalları tarayıcı üzerinden doğrudan izleme imkanı sunar.
+
+## İletişim & Detaylar
+Website: https://nosite.qzz.io
