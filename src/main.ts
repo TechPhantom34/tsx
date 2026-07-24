@@ -17,7 +17,7 @@ let channels: Channel[] = [];
 let player: Player;
 let osdTimeout: number;
 
-// M3U Parse Fonksiyonu (Tip garantili - Hata vermez)
+// M3U Parse Fonksiyonu
 async function parseM3U(url: string): Promise<Channel[]> {
   try {
     const response = await fetch(url);
@@ -62,7 +62,9 @@ async function parseM3U(url: string): Promise<Channel[]> {
 
 // Kanal Listesini Ekrana Basma
 function renderChannelList(list: Channel[]) {
-  const channelListEl = document.getElementById('channel-list')!;
+  const channelListEl = document.getElementById('channel-list');
+  if (!channelListEl) return;
+
   channelListEl.innerHTML = '';
 
   list.forEach((channel) => {
@@ -80,7 +82,7 @@ function renderChannelList(list: Channel[]) {
   });
 }
 
-// Kanalı Video.js Üzerinde Oynatma
+// Kanalı Video.js Üzerinde Oynatma (Tam Tip Korumalı)
 function playChannel(channel: Channel) {
   if (!player) return;
 
@@ -92,17 +94,22 @@ function playChannel(channel: Channel) {
   player.play().catch(() => console.log('Otomatik oynatma engellendi'));
 
   document.querySelectorAll('.channel-item').forEach(el => el.classList.remove('active'));
+  
   const activeEl = document.querySelector(`[data-id="${channel.id}"]`);
-  activeEl?.classList.add('active');
+  if (activeEl) {
+    activeEl.classList.add('active');
+  }
 
   showOSD(channel);
 }
 
-// TV OSD Bilgi Ekranı
+// TV OSD Bilgi Ekranı (Tam Tip Korumalı)
 function showOSD(channel: Channel) {
-  const osd = document.getElementById('osd')!;
-  const osdTitle = document.getElementById('osd-title')!;
-  const osdLogo = document.getElementById('osd-logo') as HTMLImageElement;
+  const osd = document.getElementById('osd');
+  const osdTitle = document.getElementById('osd-title');
+  const osdLogo = document.getElementById('osd-logo') as HTMLImageElement | null;
+
+  if (!osd || !osdTitle || !osdLogo) return;
 
   osdTitle.textContent = channel.name;
   osdLogo.src = channel.logo;
@@ -117,10 +124,14 @@ function showOSD(channel: Channel) {
 
 // Arama Mantığı
 function setupSearch() {
-  const searchInput = document.getElementById('search-input') as HTMLInputElement;
+  const searchInput = document.getElementById('search-input') as HTMLInputElement | null;
+  if (!searchInput) return;
 
   searchInput.addEventListener('input', (e) => {
-    const query = (e.target as HTMLInputElement).value.toLowerCase();
+    const target = e.target as HTMLInputElement;
+    if (!target) return;
+    
+    const query = target.value.toLowerCase();
     const filtered = channels.filter(c => c.name.toLowerCase().includes(query));
     renderChannelList(filtered);
   });
@@ -128,8 +139,9 @@ function setupSearch() {
 
 // Başlatıcı
 async function init() {
-  const videoElement = document.getElementById('tv-player') as HTMLVideoElement;
-  
+  const videoElement = document.getElementById('tv-player') as HTMLVideoElement | null;
+  if (!videoElement) return;
+
   player = videojs(videoElement, {
     autoplay: false,
     controls: true,
