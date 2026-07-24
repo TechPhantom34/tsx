@@ -19,6 +19,7 @@ let player: Player;
 let osdTimeout: number;
 
 // 1. M3U Dosyasını Parse Eden Fonksiyon
+
 async function parseM3U(url: string): Promise<Channel[]> {
   try {
     const response = await fetch(url);
@@ -26,7 +27,7 @@ async function parseM3U(url: string): Promise<Channel[]> {
     const lines = data.split('\n');
 
     const parsedChannels: Channel[] = [];
-    let currentChannel: Partial<Channel> = {};
+    let currentChannel: Partial<Channel> | null = null;
     let idCounter = 1;
 
     for (let i = 0; i < lines.length; i++) {
@@ -46,13 +47,11 @@ async function parseM3U(url: string): Promise<Channel[]> {
           name,
           logo
         };
-      } else if (line.startsWith('http://') || line.startsWith('https://')) {
-        // HLS URL'si
-        if (currentChannel.name) {
-          currentChannel.url = line;
-          parsedChannels.push(currentChannel as Channel);
-          currentChannel = {};
-        }
+      } else if ((line.startsWith('http://') || line.startsWith('https://')) && currentChannel) {
+        // HLS URL'si - currentChannel null/undefined kontrolü garantiye alındı
+        currentChannel.url = line;
+        parsedChannels.push(currentChannel as Channel);
+        currentChannel = null; // Bir sonraki kanal için sıfırla
       }
     }
 
