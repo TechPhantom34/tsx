@@ -1,0 +1,17 @@
+User-agent: *
+Allow: /
+Disallow: /assets/*
+# Yapay Zeka Botlarına İzin Ver
+User-agent: GPTBot
+Allow: /
+Disallow: /assets/*
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /assets/*
+User-agent: ClaudeBot
+Allow: /
+Disallow: /assets/*
+User-agent: PerplexityBot
+Allow: /
+Disallow: /assets/*
+Sitemap: https://nosite.qzz.io/sitemap.xml
