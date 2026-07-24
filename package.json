@@ -1,0 +1,19 @@
+{
+  "name": "vite-videojs-ts",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "video.js": "^8.21.0"
+  },
+  "devDependencies": {
+    "@types/video.js": "^7.3.58",
+    "typescript": "^5.4.5",
+    "vite": "^5.3.1"
+  }
+}
