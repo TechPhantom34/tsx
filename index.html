@@ -3,25 +3,45 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Web TV Player</title>
+    
+    <!-- Temel SEO Etiketleri -->
+    <title>CebimdeTV - Ücretsiz Web TV & Canlı Yayın Oynatıcı</title>
+    <meta name="description" content="Türk Kanalları tarayıcıda ücretsiz izleyin. Mobil uyumlu, hızlı ve reklamsız Web TV deneyimi." />
+    <meta name="keywords" content="web tv, canlı tv izle, online tv, türk kanalları izle, tv izle, canlı tv" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://nosite.qzz.io" />
+
+    <!-- Open Graph / Facebook / WhatsApp Meta Etiketleri -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://nosite.qzz.io" />
+    <meta property="og:title" content=" CebimdeTV - Ücretsiz Web TV & 100+ Kanal" />
+    <meta property="og:description" content="Türk Kanallarını tarayıcıda anında izleyin. Mobil uyumlu ve modern TV arayüzü." />
+    <meta property="og:image" content="https://nosite.qzz.io/og-image.png" />
+
+    <!-- Twitter Card Meta Etiketleri -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://nosite.qzz.io" />
+    <meta name="twitter:title" content="CebimdeTV - Ücretsiz Web TV & 100+ Kanal" />
+    <meta name="twitter:description" content="Türk Kanallarını tarayıcıda anında izleyin." />
+    <meta name="twitter:image" content="https://zappio.app/og-image.png" />
+
+    <!-- Fontlar -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   </head>
   <body>
     <div class="tv-container">
-      <!-- SOL/ÜST: Kanal Arama ve Liste Bölümü -->
+      <!-- SOL / MOBILDE ALT: Kanal Arama ve Liste -->
       <aside class="sidebar">
         <div class="sidebar-header">
-          <h2>📺 Canlı TV</h2>
+          <h2>📺 CebimdeTV Canlı TV</h2>
           <input type="text" id="search-input" placeholder="Kanal ara..." />
         </div>
-        <ul id="channel-list" class="channel-list">
-          <!-- Kanallar TS ile buraya basılacak -->
-        </ul>
+        <ul id="channel-list" class="channel-list"></ul>
       </aside>
 
-      <!-- SAĞ/ALT: Video.js TV Player Bölümü -->
+      <!-- SAĞ / MOBILDE ÜST: Video.js TV Player -->
       <main class="player-container">
         <div class="tv-screen">
           <video
