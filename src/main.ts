@@ -11,7 +11,7 @@ interface Channel {
 }
 
 // Test M3U Bağlantısı (Kendi URL'iniz ile değiştirebilirsiniz)
-const SAMPLE_M3U_URL = 'https://iptv-org.github.io/iptv/languages/tur.m3u';
+const SAMPLE_M3U_URL = 'https://raw.githubusercontent.com/TechPhantom34/iptv/refs/heads/master/index.m3u';
 
 let channels: Channel[] = [];
 let player: Player;
