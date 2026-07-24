@@ -34,7 +34,7 @@ async function parseM3U(url: string): Promise<Channel[]> {
 
       if (line.startsWith('#EXTINF:')) {
         const logoMatch = line.match(/tvg-logo="([^"]*)"/);
-        tempLogo = logoMatch ? logoMatch[1] : 'https://via.placeholder.com/50?text=TV';
+        tempLogo = logoMatch ? logoMatch[1] : 'https://placehold.co/50?text=TV';
 
         const nameParts = line.split(',');
         tempName = nameParts.length > 1 ? nameParts[nameParts.length - 1].trim() : `Kanal ${idCounter}`;
